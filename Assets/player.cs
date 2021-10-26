@@ -7,10 +7,12 @@ public class player : MonoBehaviour
     public float speed;
     public Rigidbody2D ri;
     public float jumpscale;
+    private SpriteRenderer sr;
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
-        
+        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -18,11 +20,50 @@ public class player : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         transform.position += new Vector3(x, 0) * speed * Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Space))//&&Mathf.Abs(ri.velocity.y)<=0)
+        if (x > 0)
         {
-            ri.AddForce(new Vector2(0, jumpscale), ForceMode2D.Impulse);
+            x += speed * Time.deltaTime;
+            sr.flipX = false;
+            anim.SetBool("run", true);
         }
+        else if (x < 0)
+        {
+            x -= speed * Time.deltaTime;
+            sr.flipX = true;
+            anim.SetBool("run", true);
+        }
+        else if (x == 0)
+        {
+            anim.SetBool("run", false);
+        }
+        if (Input.GetKeyDown(KeyCode.Space)&&Mathf.Abs(ri.velocity.y)<=0)
+        {
+            ri.AddForce(Vector2.up* jumpscale,ForceMode2D.Impulse);
+          
+        }
+
+        if (ri.velocity.y > 0)
+        {
+
+            anim.SetBool("jump", true);
+        }
+        else if (ri.velocity.y <= 0)
+        {
+
+            anim.SetBool("jump", false);
+
+        }
+
         //if(ri.velocity.magnitude<speed)
 
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "enemy")
+        {
+           // Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<enemy>().UpdateEnemyhealth(-10f);
+        }
     }
 }
