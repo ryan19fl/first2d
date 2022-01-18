@@ -10,7 +10,7 @@ public class enemyhealth : MonoBehaviour
     public Color Low;
     public Color High;
     //public Vector3 Offset;
-    public Image fillImage;
+    //public Image fillImage;
 
     public void SetHealth()
     {

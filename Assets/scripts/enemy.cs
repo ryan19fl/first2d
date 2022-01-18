@@ -13,11 +13,14 @@ public class enemy : MonoBehaviour
     public float nextwaypointdistance = 3f;
     Path path;
 
+    public Animator anim;
+
     public Transform enemyGpath;
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
     Seeker seeker;
     Rigidbody2D ri;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,8 +34,12 @@ public class enemy : MonoBehaviour
         enemyhealth += hitdamage;
         if(enemyhealth<=0f)
         {
-            Destroy(gameObject);
+            anim.SetTrigger("destroy");
+            Destroy(gameObject,1f);
+            
         }
+        
+        
     }
     void UpdatePath()
     {
@@ -80,5 +87,25 @@ public class enemy : MonoBehaviour
         {
             enemyGpath.localScale = new Vector3(1f, 1f, 1f);
         }
+    }
+
+    public healthsys hs;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "player")
+        {
+            // Destroy(collision.gameObject);
+
+            //collision.gameObject.GetComponent<player>().Updateplayerhealth(-10);
+            StartCoroutine(wait());
+            
+        }
+
+    }
+    IEnumerator wait()
+    {
+
+        hs.Damage();
+        yield return new WaitForSeconds(5);
     }
 }

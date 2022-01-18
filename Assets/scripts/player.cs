@@ -3,19 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class player : MonoBehaviour
-{
+{ 
     public float speed;
     public Rigidbody2D ri;
     public float jumpscale;
     private SpriteRenderer sr;
     public Animator anim;
+    //public int health;
+    //private healthsys healthsys;
+    
+    
+    
     // Start is called before the first frame update
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
+    //public void Updateplayerhealth(int damage)
+    //{
+    //      health+= damage;
+    //    if (health <= 0f)
+    //    {
+    //       // Destroy(gameObject);
+    //    }
+    //}
     void Update()
     {
         float x = Input.GetAxis("Horizontal");
@@ -66,4 +80,5 @@ public class player : MonoBehaviour
             collision.gameObject.GetComponent<enemy>().UpdateEnemyhealth(-10f);
         }
     }
+
 }
